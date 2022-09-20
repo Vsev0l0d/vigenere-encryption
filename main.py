@@ -28,14 +28,12 @@ def decrypt(ciphertext: string, key: string) -> string:
 
 FILENAME = sys.argv[1]
 MODE = sys.argv[2]
-with open(FILENAME, "r+", encoding="utf8") as file:
+with open(FILENAME, "r", encoding="utf8") as file:
     text = file.read()
-    keys = input("Введите составной ключ: ").split()
-    for key in keys:
-        if MODE.startswith("e"):
-            text = encrypt(text, key)
-        else:
-            text = decrypt(text, key)
 
-    file.seek(0)
+keys = input("Введите составной ключ: ").split()
+for key in keys:
+    text = encrypt(text, key) if MODE.startswith("e") else decrypt(text, key)
+
+with open(FILENAME, "w", encoding="utf8") as file:
     file.write(text)
