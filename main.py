@@ -1,4 +1,5 @@
 import string
+import sys
 
 ALPHABET_LENGTH = 0x10FFFF + 1
 
@@ -25,15 +26,16 @@ def decrypt(ciphertext: string, key: string) -> string:
     return encrypt(ciphertext, key, True)
 
 
-text = "Реализовать шифрование и дешифрацию файла по методу Виженера с составным ключом."
-keys = "итмо крутой университет".split()
-print("текст: " + text)
+FILENAME = sys.argv[1]
+MODE = sys.argv[2]
+with open(FILENAME, "r+", encoding="utf8") as file:
+    text = file.read()
+    keys = input("Введите составной ключ: ").split()
+    for key in keys:
+        if MODE.startswith("e"):
+            text = encrypt(text, key)
+        else:
+            text = decrypt(text, key)
 
-for key in keys:
-    text = encrypt(text, key)
-print("зашифрованный текст: " + text)
-
-for key in keys:
-    text = decrypt(text, key)
-print("расшифрованный текст: " + text)
-
+    file.seek(0)
+    file.write(text)
